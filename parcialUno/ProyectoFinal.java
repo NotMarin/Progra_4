@@ -85,7 +85,7 @@ public class ProyectoFinal {
             confirmarContrasena = leerDatoTeclado.nextLine();
             
             if (!contrasena.equals(confirmarContrasena)) {
-                System.out.print("Las contraseñas no coinciden\n");
+                System.out.print("Las contraseñas no coinciden. Inténtelo de nuevo.\n");
             }
         }
   
