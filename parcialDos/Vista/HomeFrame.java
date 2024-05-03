@@ -4,9 +4,9 @@ import javax.swing.*;
 import java.awt.*;
 
 public class HomeFrame extends JFrame {
-    private JComboBox<String> reservationsDropdown;
-    private JComboBox<String> roomsDropdown;
-    private JComboBox<String> usersDropdown;
+    private CardLayout cardLayout = new CardLayout();
+    private JPanel mainPanel = new JPanel(cardLayout);
+    private JPanel menuPanel = new JPanel(new FlowLayout());
 
     public HomeFrame(String role) {
         setupFrame(role);
@@ -17,51 +17,75 @@ public class HomeFrame extends JFrame {
 
     private void setupFrame(String role) {
         setTitle("Home - " + role);
-        setSize(400, 300);  // Tamaño ajustado para mejor visualización
+        setSize(600, 400);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
-        setLayout(new GridBagLayout());
+        setLayout(new BorderLayout());
     }
 
     private void initializeComponents(String role) {
-        reservationsDropdown = new JComboBox<>(getReservationsOptions(role));
+        // Botones de menú
+        JButton btnReservations = createMenuButton("Reservaciones");
+        menuPanel.add(btnReservations);
+        mainPanel.add(createReservationsPanel(), "Reservaciones");
+
         if (role.equals("admin")) {
-            roomsDropdown = new JComboBox<>(new String[]{"Agregar Cuarto", "Modificar Cuarto", "Remover Cuarto"});
-            usersDropdown = new JComboBox<>(new String[]{"Agregar Usuario", "Modificar Usuario", "Remover Usuario"});
+            JButton btnRooms = createMenuButton("Cuartos");
+            JButton btnUsers = createMenuButton("Usuarios");
+            menuPanel.add(btnRooms);
+            menuPanel.add(btnUsers);
+            mainPanel.add(createRoomsPanel(), "Cuartos");
+            mainPanel.add(createUsersPanel(), "Usuarios");
         }
     }
 
     private void setupLayout(String role) {
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.gridwidth = GridBagConstraints.REMAINDER;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.insets = new Insets(5, 10, 5, 10);
-
-        addComponent("Reservaciones:", reservationsDropdown, gbc);
-        reservationsDropdown.addActionListener(e -> handleSelection(reservationsDropdown.getSelectedItem().toString(), "Reservaciones"));
-
-        if (role.equals("admin")) {
-            addComponent("Cuartos:", roomsDropdown, gbc);
-            addComponent("Usuarios:", usersDropdown, gbc);
-            roomsDropdown.addActionListener(e -> handleSelection(roomsDropdown.getSelectedItem().toString(), "Cuartos"));
-            usersDropdown.addActionListener(e -> handleSelection(usersDropdown.getSelectedItem().toString(), "Usuarios"));
-        }
+        add(menuPanel, BorderLayout.NORTH);
+        add(mainPanel, BorderLayout.CENTER);
     }
 
-    private void addComponent(String labelText, JComboBox<String> comboBox, GridBagConstraints gbc) {
-        add(new JLabel(labelText), gbc);
-        add(comboBox, gbc);
+    private JButton createMenuButton(String name) {
+        JButton button = new JButton(name);
+        button.addActionListener(e -> cardLayout.show(mainPanel, name));
+        return button;
     }
 
-    private String[] getReservationsOptions(String role) {
-        if (role.equals("admin")) {
-            return new String[]{"Ver Reservaciones", "Modificar Reservacion", "Cancelar Reservacion"};
-        } else {
-            return new String[]{"Hacer Reservacion", "Ver mis Reservaciones"};
-        }
+    private JPanel createReservationsPanel() {
+        JPanel panel = new JPanel(new FlowLayout());
+        panel.add(createActionButton("Realizar Reservación", "Realizar Reservaciones"));
+        panel.add(createActionButton("Reservaciones Hechas", "Reservaciones Hechas"));
+        panel.add(createActionButton("Historial de Reservaciones", "Historial de Reservaciones"));
+        return panel;
     }
 
-    private void handleSelection(String option, String category) {
-        JOptionPane.showMessageDialog(this, "Opción seleccionada: " + option + " en " + category);
+    private JPanel createRoomsPanel() {
+        JPanel panel = new JPanel(new FlowLayout());
+        panel.add(createActionButton("Agregar Cuarto", "Agregar Cuarto"));
+        panel.add(createActionButton("Modificar Cuarto", "Modificar Cuarto"));
+        panel.add(createActionButton("Eliminar Cuarto", "Eliminar Cuarto"));
+        return panel;
+    }
+
+    private JPanel createUsersPanel() {
+        JPanel panel = new JPanel(new FlowLayout());
+        panel.add(createActionButton("Agregar Usuario", "Agregar Usuario"));
+        panel.add(createActionButton("Modificar Usuario", "Modificar Usuario"));
+        panel.add(createActionButton("Eliminar Usuario", "Eliminar Usuario"));
+        return panel;
+    }
+
+    private JButton createActionButton(String buttonText, String frameTitle) {
+        JButton button = new JButton(buttonText);
+        button.addActionListener(e -> openCategoryFrame(frameTitle));
+        return button;
+    }
+
+    private void openCategoryFrame(String title) {
+        JFrame categoryFrame = new JFrame(title);
+        categoryFrame.setSize(300, 200);
+        categoryFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        categoryFrame.setLocationRelativeTo(null);
+        categoryFrame.setTitle(title);
+        categoryFrame.setVisible(true);
     }
 }
