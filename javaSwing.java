@@ -3,7 +3,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class FinalProject {
+public class javaSwing {
     private static final int ID_TYPE = 0;
     private static final int ID_NUMBER = 1;
     private static final int FIRST_NAME = 2;
@@ -36,7 +36,8 @@ public class FinalProject {
                 if (validateCredentials(email, password)) {
                     JOptionPane.showMessageDialog(frame, "Bienvenido a MyHotel");
                 } else {
-                    JOptionPane.showMessageDialog(frame, "Credenciales incorrectas", "Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(frame, "Credenciales incorrectas", "Error",
+                            JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
@@ -108,11 +109,13 @@ public class FinalProject {
                 // Verificar si las contraseñas coinciden
                 if (password.equals(confirmPassword)) {
                     // Registrar al usuario
-                    registerUser(idType, idNumber, firstName, email, residentialAddress, cityOfResidence, contactPhoneNumber, password);
+                    registerUser(idType, idNumber, firstName, email, residentialAddress, cityOfResidence,
+                            contactPhoneNumber, password);
                     JOptionPane.showMessageDialog(frame, "Usuario registrado satisfactoriamente");
                     frame.dispose();
                 } else {
-                    JOptionPane.showMessageDialog(frame, "Las contraseñas no coinciden", "Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(frame, "Las contraseñas no coinciden", "Error",
+                            JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
@@ -123,14 +126,16 @@ public class FinalProject {
 
     public static boolean validateCredentials(String email, String password) {
         for (String[] user : users) {
-            if (user != null && user[EMAIL] != null && user[PASSWORD] != null && user[EMAIL].equals(email) && user[PASSWORD].equals(password)) {
+            if (user != null && user[EMAIL] != null && user[PASSWORD] != null && user[EMAIL].equals(email)
+                    && user[PASSWORD].equals(password)) {
                 return true;
             }
         }
         return false;
     }
 
-    public static void registerUser(String idType, String idNumber, String firstName, String email, String residentialAddress, String cityOfResidence, String contactPhoneNumber, String password) {
+    public static void registerUser(String idType, String idNumber, String firstName, String email,
+            String residentialAddress, String cityOfResidence, String contactPhoneNumber, String password) {
         String[] user = new String[10];
         user[ID_TYPE] = idType;
         user[ID_NUMBER] = idNumber;
@@ -144,4 +149,4 @@ public class FinalProject {
     public static void main(String[] args) {
         showLoginRegistrationMenu();
     }
-          }
+}
