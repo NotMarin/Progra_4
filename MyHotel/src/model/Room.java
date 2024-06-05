@@ -13,8 +13,10 @@ public class Room {
   private String amenities;
   private boolean available;
   private List<Reservation> reservations;
+  private String id;
 
-  public Room(String type, Date checkInDate, Date checkOutDate, int capacity, double price, String amenities) {
+  public Room(String type, Date checkInDate, Date checkOutDate, int capacity, double price, String amenities,
+      String id) {
     this.type = type;
     this.checkInDate = checkInDate;
     this.checkOutDate = checkOutDate;
@@ -23,6 +25,7 @@ public class Room {
     this.amenities = amenities;
     this.available = true;
     this.reservations = new ArrayList<>();
+    this.id = id;
   }
 
   public String getType() {
@@ -83,6 +86,14 @@ public class Room {
 
   public void addReservation(Reservation reservation) {
     reservations.add(reservation);
+  }
+
+  public String getId() {
+    return id;
+  }
+
+  public void setId(String id) {
+    this.id = id;
   }
 
   public void removeReservation(Reservation reservation) {

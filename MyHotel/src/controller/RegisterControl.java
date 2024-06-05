@@ -1,8 +1,8 @@
 package controller;
 
-import model.User;
 import java.util.ArrayList;
 import java.util.List;
+import model.User;
 
 public class RegisterControl {
   private static List<User> registeredUsers = new ArrayList<>();
@@ -13,6 +13,14 @@ public class RegisterControl {
 
   public static List<User> getRegisteredUsers() {
     return registeredUsers;
+  }
+
+  public User getCurrentUsers() {
+    for (User user : registeredUsers) {
+      return user;
+    }
+    return null; // Add a return statement outside of the for loop to ensure that the method
+                 // always returns a User object.
   }
 
   public static boolean isUserRegistered(String email) {

@@ -1,8 +1,12 @@
 package view;
 
 import javax.swing.*;
-import controller.RegisterControl;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import model.User;
+import controller.RegisterControl;
 
 public class RegisterScreen extends JFrame {
   private JTextField idTypeField;
@@ -48,45 +52,58 @@ public class RegisterScreen extends JFrame {
 
     JButton registerButton = new JButton("Registrar");
 
-    registerButton.addActionListener(e -> {
-      String idType = idTypeField.getText();
-      String idNumber = idNumberField.getText();
-      String firstName = firstNameField.getText();
-      String lastName = lastNameField.getText();
-      String email = emailField.getText();
-      String address = addressField.getText();
-      String city = cityField.getText();
-      String phone = phoneField.getText();
-      String password = new String(passwordField.getPassword());
-      String confirmPassword = new String(confirmPasswordField.getPassword());
-      if (RegisterControl.isUserRegistered(email)) {
-        JOptionPane.showMessageDialog(this, "Este usuario ya está registrado", "Error de Registro",
-            JOptionPane.ERROR_MESSAGE);
-      } else {
-        if (email.isEmpty() || password.isEmpty()) {
-          JOptionPane.showMessageDialog(this, "Por favor, complete todos los campos", "Campos Vacíos",
+    registerButton.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        String idType = idTypeField.getText();
+        String idNumber = idNumberField.getText();
+        String firstName = firstNameField.getText();
+        String lastName = lastNameField.getText();
+        String email = emailField.getText();
+        String address = addressField.getText();
+        String city = cityField.getText();
+        String phone = phoneField.getText();
+        String password = new String(passwordField.getPassword());
+        String confirmPassword = new String(confirmPasswordField.getPassword());
+
+        // Validar que todos los campos estén llenos
+        if (idType.isEmpty() || idNumber.isEmpty() || firstName.isEmpty() || lastName.isEmpty() ||
+            email.isEmpty() || address.isEmpty() || city.isEmpty() || phone.isEmpty() ||
+            password.isEmpty() || confirmPassword.isEmpty()) {
+          JOptionPane.showMessageDialog(RegisterScreen.this, "Por favor, complete todos los campos", "Campos Vacíos",
               JOptionPane.WARNING_MESSAGE);
-        } else {
-          if (!password.equals(confirmPassword)) {
-            JOptionPane.showMessageDialog(this, "La confirmación de la contraseña es incorrecta", "Error de Registro",
-                JOptionPane.ERROR_MESSAGE);
-          } else {
-            User newUser = new User(idType, idNumber, firstName, lastName, email, address, city, phone, password);
-            RegisterControl.registerUser(newUser);
-            JOptionPane.showMessageDialog(this, "Usuario registrado satisfactoriamente", "Registro Exitoso",
-                JOptionPane.INFORMATION_MESSAGE);
-            dispose();
-            new LoginScreen();
-          }
+          return;
         }
+
+        // Validar que las contraseñas coincidan
+        if (!password.equals(confirmPassword)) {
+          JOptionPane.showMessageDialog(RegisterScreen.this, "Las contraseñas no coinciden.", "Error de registro",
+              JOptionPane.ERROR_MESSAGE);
+          return;
+        }
+
+        // Validar los campos específicos
+        if (!tipoIdValido(idType) || !numeroIdValido(idNumber) || !correoValido(email)) {
+          return;
+        }
+
+        // Crear el nuevo usuario si todas las validaciones son correctas
+        User newUser = new User(idType, idNumber, firstName, lastName, email, address, city, phone, password);
+        RegisterControl.registerUser(newUser);
+        JOptionPane.showMessageDialog(RegisterScreen.this, "Usuario registrado satisfactoriamente", "Registro Exitoso",
+            JOptionPane.INFORMATION_MESSAGE);
+        dispose();
+        new LoginScreen();
       }
     });
 
     JButton loginButton = new JButton("Iniciar Sesión");
-    loginButton.addActionListener(e -> {
-      dispose();
-      LoginScreen loginFrame = new LoginScreen();
-      loginFrame.setVisible(true);
+    loginButton.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        dispose();
+        new LoginScreen();
+      }
     });
 
     GroupLayout.SequentialGroup hGroup = layout.createSequentialGroup();
@@ -157,5 +174,35 @@ public class RegisterScreen extends JFrame {
     pack();
     setLocationRelativeTo(null);
     setVisible(true);
+  }
+
+  private boolean tipoIdValido(String tipoId) {
+    if (!(tipoId.equals("CC") || tipoId.equals("TI") || tipoId.equals("PA"))) {
+      JOptionPane.showMessageDialog(this, "Identificación inválida. Debe ser CC, TI o PA.", "Error de registro",
+          JOptionPane.ERROR_MESSAGE);
+      return false;
+    }
+    return true;
+  }
+
+  private boolean numeroIdValido(String numeroId) {
+    if (!numeroId.matches("\\d+")) {
+      JOptionPane.showMessageDialog(this, "Número de identificación inválido. Debe ser un número.", "Error de registro",
+          JOptionPane.ERROR_MESSAGE);
+      return false;
+    }
+    return true;
+  }
+
+  private boolean correoValido(String correo) {
+    String patronCorreo = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
+    Pattern patron = Pattern.compile(patronCorreo);
+    Matcher coincidencia = patron.matcher(correo);
+    if (!coincidencia.matches()) {
+      JOptionPane.showMessageDialog(this, "Formato de correo inválido.", "Error de registro",
+          JOptionPane.ERROR_MESSAGE);
+      return false;
+    }
+    return true;
   }
 }

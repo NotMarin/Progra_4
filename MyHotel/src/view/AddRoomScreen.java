@@ -39,6 +39,7 @@ public class AddRoomScreen extends JFrame {
       int capacity;
       double price;
       String amenities = amenitiesField.getText();
+      String id = "Habitacion" + RoomControl.getRooms().size() + 1;
       try {
         capacity = Integer.parseInt(capacityField.getText());
         price = Double.parseDouble(priceField.getText());
@@ -46,7 +47,7 @@ public class AddRoomScreen extends JFrame {
           JOptionPane.showMessageDialog(this, "Por favor, complete todos los campos", "Campos Vacíos",
               JOptionPane.WARNING_MESSAGE);
         } else {
-          Room newRoom = new Room(type, checkInDate, checkOutDate, capacity, price, amenities);
+          Room newRoom = new Room(type, checkInDate, checkOutDate, capacity, price, amenities, id);
           RoomControl.addRoom(newRoom);
           JOptionPane.showMessageDialog(this, "Habitación agregada satisfactoriamente", "Operación Exitosa",
               JOptionPane.INFORMATION_MESSAGE);

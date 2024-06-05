@@ -17,8 +17,20 @@ public class RoomControl {
     return rooms;
   }
 
-  public static void updateRoom(Room room) {
-    // Implementación para actualizar una habitación
+  public static void updateRoom(Room roomToUpdate) {
+    // Buscar la habitación en la lista de habitaciones
+    for (Room room : rooms) {
+      if (room.getId().equals(roomToUpdate.getId())) { // Suponiendo que hay un método getId() en la clase Room para
+                                                       // identificarla
+        // Actualizar la habitación encontrada con los datos de la habitación a
+        // actualizar
+        room.setPrice(roomToUpdate.getPrice());
+        room.setAmenities(roomToUpdate.getAmenities());
+        room.setAvailable(roomToUpdate.isAvailable());
+        // Si necesitas más campos para actualizar, agregar aquí
+        break; // Terminar el bucle una vez que se haya encontrado y actualizado la habitación
+      }
+    }
   }
 
   public static void deleteRoom(Room room) {

@@ -1,5 +1,8 @@
 package model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class User {
   private String idType;
   private String idNumber;
@@ -10,6 +13,7 @@ public class User {
   private String cityResidence;
   private String contactNumber;
   private String password;
+  private List<Reservation> reservations;
 
   public User(String idType, String idNumber, String firstName, String lastName, String email, String homeAddress,
       String cityResidence, String contactNumber, String password) {
@@ -22,6 +26,7 @@ public class User {
     this.cityResidence = cityResidence;
     this.contactNumber = contactNumber;
     this.password = password;
+    this.reservations = new ArrayList<>();
   }
 
   public String getIdType() {
@@ -94,5 +99,17 @@ public class User {
 
   public void setPassword(String password) {
     this.password = password;
+  }
+
+  public List<Reservation> getReservations() {
+    return reservations;
+  }
+
+  public void addReservation(Reservation reservation) {
+    reservations.add(reservation);
+  }
+
+  public void removeReservation(Reservation reservation) {
+    reservations.remove(reservation);
   }
 }
