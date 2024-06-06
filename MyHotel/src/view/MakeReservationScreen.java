@@ -20,15 +20,15 @@ public class MakeReservationScreen extends JFrame {
   public MakeReservationScreen() {
     super("Realizar Reserva - MyHotel");
 
-    dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    dateFormat = new SimpleDateFormat("YYYY-MM-DD");
 
     JPanel panel = new JPanel();
     panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
     JLabel roomLabel = new JLabel("Seleccionar Habitación:");
     JLabel nameLabel = new JLabel("Nombre:");
-    JLabel checkInDateLabel = new JLabel("Fecha de Entrada (yyyy-MM-dd):");
-    JLabel checkOutDateLabel = new JLabel("Fecha de Salida (yyyy-MM-dd):");
+    JLabel checkInDateLabel = new JLabel("Fecha de Entrada (YYYY-MM-DD):");
+    JLabel checkOutDateLabel = new JLabel("Fecha de Salida (YYYY-MM-DD):");
     JLabel numGuestsLabel = new JLabel("Número de Huéspedes:");
 
     List<Room> rooms = RoomControl.getRooms();
@@ -69,7 +69,7 @@ public class MakeReservationScreen extends JFrame {
                 JOptionPane.ERROR_MESSAGE);
           }
         } catch (ParseException ex) {
-          JOptionPane.showMessageDialog(this, "Por favor, ingrese fechas en el formato correcto (yyyy-MM-dd).", "Error",
+          JOptionPane.showMessageDialog(this, "Por favor, ingrese fechas en el formato correcto (YYYY-MM-DD).", "Error",
               JOptionPane.ERROR_MESSAGE);
         } catch (NumberFormatException ex) {
           JOptionPane.showMessageDialog(this, "Por favor, ingrese un número válido de huéspedes.", "Error",

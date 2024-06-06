@@ -15,7 +15,7 @@ public class RoomAvailableScreen extends JFrame {
   public RoomAvailableScreen() {
     super("Verificar Disponibilidad - MyHotel");
 
-    dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    dateFormat = new SimpleDateFormat("YYYY-MM-DD");
 
     JPanel panel = new JPanel();
     panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
@@ -38,7 +38,7 @@ public class RoomAvailableScreen extends JFrame {
           List<Room> availableRooms = RoomControl.checkAvailability(startDate, endDate);
           showAvailability(availableRooms);
         } catch (ParseException ex) {
-          JOptionPane.showMessageDialog(this, "Por favor, ingrese fechas en el formato correcto (yyyy-MM-dd).", "Error",
+          JOptionPane.showMessageDialog(this, "Por favor, ingrese fechas en el formato correcto (YYYY-MM-DD).", "Error",
               JOptionPane.ERROR_MESSAGE);
         }
       } else {

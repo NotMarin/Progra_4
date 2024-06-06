@@ -1,6 +1,7 @@
 package view;
 
 import javax.swing.*;
+import java.awt.*;
 import controller.LoginControl;
 
 public class LoginScreen extends JFrame {
@@ -11,10 +12,28 @@ public class LoginScreen extends JFrame {
     super("Inicio de Sesión - MyHotel");
 
     JPanel loginPanel = new JPanel();
+    loginPanel.setBackground(Color.WHITE);
     GroupLayout layout = new GroupLayout(loginPanel);
     loginPanel.setLayout(layout);
     layout.setAutoCreateGaps(true);
     layout.setAutoCreateContainerGaps(true);
+
+    // Cargar el logo del hotel
+    String logoPath = "MyHotel/assets/MyHotelLogo.png";
+    ImageIcon logoIcon = new ImageIcon(logoPath);
+    if (logoIcon.getIconWidth() == -1) {
+      System.out.println("Logo no encontrado en " + logoPath);
+    }
+    Image image = logoIcon.getImage();
+    Image scaledImage = image.getScaledInstance(350, 350, Image.SCALE_SMOOTH); // Ajusta los valores de ancho y alto
+                                                                               // según necesites
+    logoIcon = new ImageIcon(scaledImage);
+    JLabel logoLabel = new JLabel(logoIcon);
+
+    // Título con "MyHotel" en azul claro
+    JLabel titleLabel = new JLabel("<html>Bienvenido a <font color='#2ba8de'>MyHotel</font></html>");
+    titleLabel.setFont(new Font("Arial", Font.BOLD, 24));
+    titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
     JLabel emailLabel = new JLabel("Correo:");
     JLabel passwordLabel = new JLabel("Contraseña:");
@@ -57,7 +76,9 @@ public class LoginScreen extends JFrame {
     });
 
     layout.setHorizontalGroup(
-        layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+        layout.createParallelGroup(GroupLayout.Alignment.CENTER)
+            .addComponent(logoLabel)
+            .addComponent(titleLabel)
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                     .addComponent(emailLabel)
@@ -71,12 +92,16 @@ public class LoginScreen extends JFrame {
 
     layout.setVerticalGroup(
         layout.createSequentialGroup()
+            .addComponent(logoLabel)
+            .addComponent(titleLabel)
+            .addGap(20)
             .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                 .addComponent(emailLabel)
                 .addComponent(emailField))
             .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                 .addComponent(passwordLabel)
                 .addComponent(passwordField))
+            .addGap(20)
             .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                 .addComponent(loginButton)
                 .addComponent(registerButton)));
@@ -84,7 +109,7 @@ public class LoginScreen extends JFrame {
     add(loginPanel);
 
     setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-    pack();
+    setSize(350, 600); // Aumenté el tamaño para acomodar el logo y el título
     setLocationRelativeTo(null);
     setVisible(true);
   }

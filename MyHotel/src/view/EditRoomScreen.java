@@ -42,27 +42,7 @@ public class EditRoomScreen extends JFrame {
       }
     });
 
-    saveButton.addActionListener(e -> {
-      Room selectedRoom = (Room) roomComboBox.getSelectedItem();
-      if (selectedRoom != null) {
-        try {
-          double price = Double.parseDouble(priceField.getText());
-          String amenities = amenitiesField.getText();
-          boolean availability = availabilityCheckBox.isSelected();
-
-          selectedRoom.setPrice(price);
-          selectedRoom.setAmenities(amenities);
-          selectedRoom.setAvailable(availability);
-
-          RoomControl.updateRoom(selectedRoom);
-          JOptionPane.showMessageDialog(this, "Habitación actualizada satisfactoriamente", "Operación Exitosa",
-              JOptionPane.INFORMATION_MESSAGE);
-        } catch (NumberFormatException ex) {
-          JOptionPane.showMessageDialog(this, "El precio debe ser un valor numérico", "Error de Formato",
-              JOptionPane.ERROR_MESSAGE);
-        }
-      }
-    });
+    saveButton.addActionListener(e -> saveChanges());
 
     GroupLayout.SequentialGroup hGroup = layout.createSequentialGroup();
     hGroup.addGroup(layout.createParallelGroup(GroupLayout.Alignment.TRAILING)
@@ -100,5 +80,32 @@ public class EditRoomScreen extends JFrame {
     pack();
     setLocationRelativeTo(null);
     setVisible(true);
+  }
+
+  // Método para guardar los cambios en la habitación
+  private void saveChanges() {
+    Room selectedRoom = (Room) roomComboBox.getSelectedItem();
+    if (selectedRoom != null) {
+      try {
+        double price = Double.parseDouble(priceField.getText());
+        String amenities = amenitiesField.getText();
+        boolean availability = availabilityCheckBox.isSelected();
+
+        selectedRoom.setPrice(price);
+        selectedRoom.setAmenities(amenities);
+        selectedRoom.setAvailable(availability);
+
+        RoomControl.updateRoom(selectedRoom);
+        JOptionPane.showMessageDialog(this, "Habitación actualizada satisfactoriamente", "Operación Exitosa",
+            JOptionPane.INFORMATION_MESSAGE);
+      } catch (NumberFormatException ex) {
+        JOptionPane.showMessageDialog(this, "El precio debe ser un valor numérico", "Error de Formato",
+            JOptionPane.ERROR_MESSAGE);
+      }
+    }
+  }
+
+  public static void main(String[] args) {
+    SwingUtilities.invokeLater(EditRoomScreen::new);
   }
 }

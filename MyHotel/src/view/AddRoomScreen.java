@@ -1,6 +1,7 @@
 package view;
 
 import javax.swing.*;
+import java.awt.*;
 import controller.RoomControl;
 import model.Room;
 import java.util.Date;
@@ -14,11 +15,21 @@ public class AddRoomScreen extends JFrame {
   public AddRoomScreen() {
     super("Agregar Habitación - MyHotel");
 
+    // Crear el panel principal con un fondo blanco
     JPanel addPanel = new JPanel();
+    addPanel.setBackground(Color.WHITE);
+    addPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+    // Establecer el diseño del panel principal
     GroupLayout layout = new GroupLayout(addPanel);
     addPanel.setLayout(layout);
     layout.setAutoCreateGaps(true);
     layout.setAutoCreateContainerGaps(true);
+
+    // Título
+    JLabel titleLabel = new JLabel("<html>Agregar Habitación a <font color='#2ba8de'>MyHotel</font></html>");
+    titleLabel.setFont(new Font("Arial", Font.BOLD, 24));
+    titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
     JLabel typeLabel = new JLabel("Tipo de Habitación:");
     JLabel capacityLabel = new JLabel("Capacidad:");
@@ -29,6 +40,9 @@ public class AddRoomScreen extends JFrame {
     capacityField = new JTextField(20);
     priceField = new JTextField(20);
     amenitiesField = new JTextArea(5, 20);
+    amenitiesField.setLineWrap(true);
+    amenitiesField.setWrapStyleWord(true);
+    JScrollPane amenitiesScrollPane = new JScrollPane(amenitiesField);
 
     JButton addButton = new JButton("Agregar");
 
@@ -39,7 +53,7 @@ public class AddRoomScreen extends JFrame {
       int capacity;
       double price;
       String amenities = amenitiesField.getText();
-      String id = "Habitacion" + RoomControl.getRooms().size() + 1;
+      String id = "Habitacion" + (RoomControl.getRooms().size() + 1);
       try {
         capacity = Integer.parseInt(capacityField.getText());
         price = Double.parseDouble(priceField.getText());
@@ -59,41 +73,51 @@ public class AddRoomScreen extends JFrame {
       }
     });
 
-    GroupLayout.SequentialGroup hGroup = layout.createSequentialGroup();
-    hGroup.addGroup(layout.createParallelGroup(GroupLayout.Alignment.TRAILING)
-        .addComponent(typeLabel)
-        .addComponent(capacityLabel)
-        .addComponent(priceLabel)
-        .addComponent(amenitiesLabel));
-    hGroup.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-        .addComponent(typeComboBox)
-        .addComponent(capacityField)
-        .addComponent(priceField)
-        .addComponent(amenitiesField)
-        .addComponent(addButton));
-    layout.setHorizontalGroup(hGroup);
+    // Configuración del GroupLayout
+    layout.setHorizontalGroup(
+        layout.createParallelGroup(GroupLayout.Alignment.CENTER)
+            .addComponent(titleLabel)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.TRAILING)
+                    .addComponent(typeLabel)
+                    .addComponent(capacityLabel)
+                    .addComponent(priceLabel)
+                    .addComponent(amenitiesLabel))
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                    .addComponent(typeComboBox)
+                    .addComponent(capacityField)
+                    .addComponent(priceField)
+                    .addComponent(amenitiesScrollPane)
+                    .addComponent(addButton))));
 
-    GroupLayout.SequentialGroup vGroup = layout.createSequentialGroup();
-    vGroup.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-        .addComponent(typeLabel)
-        .addComponent(typeComboBox));
-    vGroup.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-        .addComponent(capacityLabel)
-        .addComponent(capacityField));
-    vGroup.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-        .addComponent(priceLabel)
-        .addComponent(priceField));
-    vGroup.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-        .addComponent(amenitiesLabel)
-        .addComponent(amenitiesField));
-    vGroup.addComponent(addButton);
-    layout.setVerticalGroup(vGroup);
+    layout.setVerticalGroup(
+        layout.createSequentialGroup()
+            .addComponent(titleLabel)
+            .addGap(20)
+            .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                .addComponent(typeLabel)
+                .addComponent(typeComboBox))
+            .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                .addComponent(capacityLabel)
+                .addComponent(capacityField))
+            .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                .addComponent(priceLabel)
+                .addComponent(priceField))
+            .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                .addComponent(amenitiesLabel)
+                .addComponent(amenitiesScrollPane))
+            .addGap(20)
+            .addComponent(addButton));
 
     add(addPanel);
 
     setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-    pack();
+    setSize(500, 400); // Tamaño ajustado para acomodar el contenido
     setLocationRelativeTo(null);
     setVisible(true);
+  }
+
+  public static void main(String[] args) {
+    SwingUtilities.invokeLater(() -> new AddRoomScreen());
   }
 }
